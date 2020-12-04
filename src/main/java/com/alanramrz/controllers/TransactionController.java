@@ -38,4 +38,9 @@ public class TransactionController {
     public ResponseEntity<Object> sumTransactionsByUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.sumTransactionsByUser(userId));
     }
+
+    @GetMapping("/users/{userId}/report-transactions")
+    public ResponseEntity<Object> reportTransactionsByUser(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.reportTransactionsByUser(userId));
+    }
 }
