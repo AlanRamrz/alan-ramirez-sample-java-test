@@ -1,5 +1,6 @@
 package com.alanramrz.controllers;
 
+import com.alanramrz.configuration.exceptions.BaseError;
 import com.alanramrz.dtos.requests.TransactionRequestDTO;
 import com.alanramrz.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,13 @@ public class TransactionController {
     @GetMapping("/users/{userId}/transactions")
     public ResponseEntity<Object> getTransactionsByUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsByUser(userId));
+    }
+
+    @GetMapping("/users/{userId}/transactions/{transactionId}")
+    public ResponseEntity<Object> showTransactionByUser(
+        @PathVariable Long userId,
+        @PathVariable String transactionId
+    ) throws BaseError {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.showTransactionByUser(transactionId, userId));
     }
 }
