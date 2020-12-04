@@ -33,4 +33,9 @@ public class TransactionController {
     ) throws BaseError {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.showTransactionByUser(transactionId, userId));
     }
+
+    @GetMapping("/users/{userId}/sum-transactions")
+    public ResponseEntity<Object> sumTransactionsByUser(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.sumTransactionsByUser(userId));
+    }
 }

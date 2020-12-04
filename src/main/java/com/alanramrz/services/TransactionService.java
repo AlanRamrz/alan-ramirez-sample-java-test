@@ -2,6 +2,7 @@ package com.alanramrz.services;
 
 import com.alanramrz.configuration.exceptions.BaseError;
 import com.alanramrz.dtos.requests.TransactionRequestDTO;
+import com.alanramrz.dtos.responses.SumTransactionsResponseDTO;
 import com.alanramrz.models.Transaction;
 import com.alanramrz.repositories.TransactionRepository;
 import com.alanramrz.utils.Constants;
@@ -42,5 +43,12 @@ public class TransactionService {
         }
 
         return transaction;
+    }
+
+    public SumTransactionsResponseDTO sumTransactionsByUser(Long userId) {
+        List<Transaction> transactions = transactionRepository.findByUserIdOrderByDateAsc(userId);
+        Double sum = transactions.isEmpty() ? 0.0 : transactions.stream().mapToDouble(it -> it.getAmount()).sum();
+
+        return new SumTransactionsResponseDTO(userId, sum);
     }
 }
