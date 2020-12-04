@@ -19,4 +19,9 @@ public class TransactionController {
     public ResponseEntity<Object> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.createTransaction(transactionRequestDTO));
     }
+
+    @GetMapping("/users/{userId}/transactions")
+    public ResponseEntity<Object> getTransactionsByUser(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsByUser(userId));
+    }
 }

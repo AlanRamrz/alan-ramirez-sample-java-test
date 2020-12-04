@@ -6,6 +6,8 @@ import com.alanramrz.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
 
@@ -17,5 +19,9 @@ public class TransactionService {
         transaction = transactionRepository.save(transaction);
 
         return transaction;
+    }
+
+    public List<Transaction> getTransactionsByUser(Long userId) {
+        return transactionRepository.findByUserIdOrderByDateAsc(userId);
     }
 }
