@@ -21,6 +21,11 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.createTransaction(transactionRequestDTO));
     }
 
+    @GetMapping("/transactions/random")
+    public ResponseEntity<Object> getRandomTransaction() throws BaseError {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.getRandomTransaction());
+    }
+
     @GetMapping("/users/{userId}/transactions")
     public ResponseEntity<Object> getTransactionsByUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsByUser(userId));

@@ -7,7 +7,6 @@ import com.alanramrz.dtos.responses.SumTransactionsResponseDTO;
 import com.alanramrz.models.Transaction;
 import com.alanramrz.repositories.TransactionRepository;
 import com.alanramrz.utils.Constants;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,17 @@ public class TransactionService {
         transaction = transactionRepository.save(transaction);
 
         return transaction;
+    }
+
+    public Transaction getRandomTransaction() throws BaseError {
+        List<Transaction> transactions = transactionRepository.findAll();
+        if (transactions.isEmpty()) {
+            throw new BaseError(HttpStatus.CONFLICT, Constants.EMPTY_LIST, Constants.TRANSACTIONS_EMPTY_LIST);
+        }
+
+        Random random = new Random();
+
+        return transactions.get(random.nextInt(transactions.size()));
     }
 
     public List<Transaction> getTransactionsByUser(Long userId) {
