@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +19,7 @@ public class ReportTransactionRowResponseDTO {
     private Double amount;
     private Double totalAmount;
 
-    public ReportTransactionRowResponseDTO(Long userId, Date weekStart, Date weekFinish, Integer quantity, Double amount, Double totalAmount){
+    public ReportTransactionRowResponseDTO(Long userId, Date weekStart, Date weekFinish, Integer quantity, Double amount, Double totalAmount) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd EEEE");
         this.userId = userId;
         this.weekStart = formatter.format(weekStart);

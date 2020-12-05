@@ -11,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Optional;
+import java.util.Date;
+import java.util.Calendar;
 
 @Service
 public class TransactionService {
@@ -65,7 +70,7 @@ public class TransactionService {
     public List<ReportTransactionRowResponseDTO> reportTransactionsByUser(Long userId) {
         List<ReportTransactionRowResponseDTO> reportList = new ArrayList<>();
         List<Transaction> transactions = transactionRepository.findByUserIdOrderByDateAsc(userId);
-        if(transactions.isEmpty()){
+        if (transactions.isEmpty()) {
             return reportList;
         }
 
@@ -75,7 +80,7 @@ public class TransactionService {
         Double amount = 0.0;
         Double totalAmount = 0.0;
 
-        for(Transaction transaction : transactions) {
+        for (Transaction transaction : transactions) {
             if (transaction.getDate().getTime() >= startWeek.getTime() && transaction.getDate().getTime() <= endWeek.getTime()) {
                 quantity++;
                 amount += transaction.getAmount();
@@ -94,20 +99,20 @@ public class TransactionService {
         return reportList;
     }
 
-    private Date getStartWeek(Date date){
+    private Date getStartWeek(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY){
+        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
             cal.add(Calendar.DAY_OF_YEAR, -1);
         }
 
         return cal.getTime();
     }
 
-    private Date getEndWeek(Date date){
+    private Date getEndWeek(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY){
+        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY) {
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 

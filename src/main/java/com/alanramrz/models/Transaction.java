@@ -23,7 +23,7 @@ public class Transaction {
     private String description;
     private Long userId;
 
-    public Transaction(TransactionRequestDTO transactionRequestDTO){
+    public Transaction(TransactionRequestDTO transactionRequestDTO) {
         this.id = UUID.randomUUID().toString();
         this.amount = transactionRequestDTO.getAmount();
         this.date = transactionRequestDTO.getDate();
