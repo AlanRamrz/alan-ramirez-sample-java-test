@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Optional;
-import java.util.Date;
-import java.util.Calendar;
 
 @Service
 public class TransactionService {
@@ -74,48 +75,44 @@ public class TransactionService {
             return reportList;
         }
 
-        Date startWeek = getStartWeek(transactions.get(0).getDate());
-        Date endWeek = getEndWeek(transactions.get(0).getDate());
+        LocalDate startWeek = getStartWeek(transactions.get(0).getDate());
+        LocalDate endWeek = getEndWeek(transactions.get(0).getDate());
         Integer quantity = 0;
         Double amount = 0.0;
         Double totalAmount = 0.0;
 
         for (Transaction transaction : transactions) {
-            if (transaction.getDate().getTime() >= startWeek.getTime() && transaction.getDate().getTime() <= endWeek.getTime()) {
-                quantity++;
-                amount += transaction.getAmount();
+            if (transaction.getDate().isBefore(startWeek) || transaction.getDate().isAfter(endWeek)) {
+                reportList.add(new ReportTransactionRowResponseDTO(userId, startWeek, endWeek, quantity, amount, totalAmount));
+                totalAmount += amount;
+                startWeek = getStartWeek(transaction.getDate());
+                endWeek = getEndWeek(transaction.getDate());
+                quantity = 1;
+                amount = transaction.getAmount();
                 continue;
             }
-
-            reportList.add(new ReportTransactionRowResponseDTO(userId, startWeek, endWeek, quantity, amount, totalAmount));
-            totalAmount += amount;
-            startWeek = getStartWeek(transaction.getDate());
-            endWeek = getEndWeek(transaction.getDate());
-            quantity = 1;
-            amount = transaction.getAmount();
+            quantity++;
+            amount += transaction.getAmount();
         }
         reportList.add(new ReportTransactionRowResponseDTO(userId, startWeek, endWeek, quantity, amount, totalAmount));
 
         return reportList;
     }
 
-    private Date getStartWeek(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-            cal.add(Calendar.DAY_OF_YEAR, -1);
+    private LocalDate getStartWeek(LocalDate date) {
+        while (date.getDayOfMonth() != 1 && date.getDayOfWeek() != DayOfWeek.FRIDAY) {
+            date = date.minusDays(1);
         }
 
-        return cal.getTime();
+        return date;
     }
 
-    private Date getEndWeek(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY) {
-            cal.add(Calendar.DAY_OF_YEAR, 1);
+    private LocalDate getEndWeek(LocalDate date) {
+        LocalDate endOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+        while (date.isBefore(endOfMonth) && date.getDayOfWeek() != DayOfWeek.THURSDAY) {
+            date = date.plusDays(1);
         }
 
-        return cal.getTime();
+        return date;
     }
 }

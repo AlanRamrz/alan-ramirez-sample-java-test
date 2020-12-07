@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -19,7 +19,7 @@ public class Transaction {
     @Id
     private String id;
     private Double amount;
-    private Date date;
+    private LocalDate date;
     private String description;
     private Long userId;
 

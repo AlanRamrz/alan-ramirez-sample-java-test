@@ -3,7 +3,7 @@ package com.alanramrz.dtos.requests;
 import lombok.Data;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class TransactionRequestDTO {
@@ -12,7 +12,7 @@ public class TransactionRequestDTO {
     private Double amount;
 
     @NotNull(message = "Please provide 'date'")
-    private Date date;
+    private LocalDate date;
 
     @NotNull(message = "Please provide 'description'")
     private String description;

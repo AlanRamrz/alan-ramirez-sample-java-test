@@ -3,10 +3,8 @@ package com.alanramrz.dtos.responses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +17,8 @@ public class ReportTransactionRowResponseDTO {
     private Double amount;
     private Double totalAmount;
 
-    public ReportTransactionRowResponseDTO(Long userId, Date weekStart, Date weekFinish, Integer quantity, Double amount, Double totalAmount) {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd EEEE");
+    public ReportTransactionRowResponseDTO(Long userId, LocalDate weekStart, LocalDate weekFinish, Integer quantity, Double amount, Double totalAmount) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd EEEE");
         this.userId = userId;
         this.weekStart = formatter.format(weekStart);
         this.weekFinish = formatter.format(weekFinish);
